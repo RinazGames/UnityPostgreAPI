@@ -1,27 +1,24 @@
 # Используем официальный образ .NET SDK для сборки
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 
-# Указываем рабочую директорию
+# Устанавливаем рабочую директорию
 WORKDIR /src
 
-# Копируем csproj и восстанавливаем зависимости
-COPY ["UnityPostreAPI/UnityPostreAPI.csproj", "UnityPostreAPI/"]
-RUN dotnet restore "UnityPostreAPI/UnityPostreAPI.csproj"
+# Копируем файл csproj и восстанавливаем зависимости
+COPY UnityPostreAPI.csproj ./
+RUN dotnet restore "./UnityPostreAPI.csproj"
 
-# Копируем все остальные файлы
+# Копируем остальные файлы и публикуем приложение
 COPY . .
+RUN dotnet publish "./UnityPostreAPI.csproj" -c Release -o /app/publish
 
-# Публикуем приложение
-RUN dotnet publish "UnityPostreAPI/UnityPostreAPI.csproj" -c Release -o /app/publish
-
-# Используем официальный образ .NET Runtime для выполнения приложения
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+# Используем официальный образ ASP.NET Core Runtime
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/publish .
 
-# Открываем порт для приложения
+# Открываем порт 80
 EXPOSE 80
 
-# Запускаем приложение
+# Задаем команду для запуска приложения
 ENTRYPOINT ["dotnet", "UnityPostreAPI.dll"]
-
