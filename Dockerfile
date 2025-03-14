@@ -5,7 +5,7 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 
 # Копируем файл проекта и восстанавливаем зависимости
-COPY UnityPostreAPI.csproj ./
+COPY ["UnityPostreAPI.csproj", "./"]
 RUN dotnet restore "UnityPostreAPI.csproj"
 
 # Копируем остальные файлы и публикуем приложение
