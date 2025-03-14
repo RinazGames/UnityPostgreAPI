@@ -6,9 +6,14 @@ namespace UnityPostreAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Получаем строку подключения из переменных среды Render.
-            var connectionString = builder.Configuration["ConnectionStrings__PostgreSqlConnection"]
-                ?? throw new InvalidOperationException("Строка подключения не найдена в конфигурации.");
+            // РџСЂРѕРІРµСЂСЏРµРј, РµСЃР»Рё СЃС‚СЂРѕРєР° РїРѕРґРєР»СЋС‡РµРЅРёСЏ РµСЃС‚СЊ РІ РїРµСЂРµРјРµРЅРЅРѕР№ РѕРєСЂСѓР¶РµРЅРёСЏ
+            var connectionString = builder.Configuration.GetValue<string>("ConnectionStrings:PostgreSqlConnection");
+
+            // Р•СЃР»Рё РїРµСЂРµРјРµРЅРЅР°СЏ РѕРєСЂСѓР¶РµРЅРёСЏ РЅРµ Р·Р°РґР°РЅР°, С‚Рѕ РёСЃРїРѕР»СЊР·СѓРµРј СЃС‚СЂРѕРєСѓ РїРѕРґРєР»СЋС‡РµРЅРёСЏ РёР· С„Р°Р№Р»Р° РєРѕРЅС„РёРіСѓСЂР°С†РёРё
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                connectionString = builder.Configuration.GetConnectionString("PostgreSqlConnection");
+            }
 
             builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
@@ -18,7 +23,7 @@ namespace UnityPostreAPI
 
             var app = builder.Build();
 
-            // Конфигурируем HTTP пайплайн.
+            // РљРѕРЅС„РёРіСѓСЂРёСЂСѓРµРј HTTP РїР°Р№РїР»Р°Р№РЅ.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
