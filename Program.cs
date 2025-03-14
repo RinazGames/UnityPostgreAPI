@@ -6,7 +6,10 @@ namespace UnityPostreAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Добавляем доступ к строке подключения из appsettings.json.
+            // Получаем строку подключения из переменных среды Render.
+            var connectionString = builder.Configuration["ConnectionStrings__PostgreSqlConnection"]
+                ?? throw new InvalidOperationException("Строка подключения не найдена в конфигурации.");
+
             builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
             builder.Services.AddControllers();
@@ -15,7 +18,7 @@ namespace UnityPostreAPI
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            // Конфигурируем HTTP пайплайн.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
