@@ -24,3 +24,4 @@ EXPOSE 80
 
 # Запускаем приложение
 ENTRYPOINT ["dotnet", "UnityPostreAPI.dll"]
+
