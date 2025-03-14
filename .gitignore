@@ -1,0 +1,40 @@
+# Игнорируем временные файлы сборки
+bin/
+obj/
+out/
+
+# Игнорируем пользовательские настройки Visual Studio
+.vs/
+*.user
+*.suo
+*.cache
+*.csproj.user
+
+# Игнорируем файлы конфигурации с паролями (если есть)
+appsettings.json
+appsettings.Development.json
+secrets.json
+
+# Игнорируем файлы среды (если есть)
+.env
+
+# Игнорируем временные файлы IDE
+*.log
+*.pidb
+*.sln.cache
+*.ncb
+*.pdb
+
+# Игнорируем файлы Unity (если используешь Unity)
+Library/
+Temp/
+Logs/
+UserSettings/
+Packages/
+
+# Игнорируем зависимости (если есть папка node_modules)
+node_modules/
+
+# Игнорируем файлы Docker (если используешь Docker)
+*.dockerfile
+docker-compose.override.yml
